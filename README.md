@@ -95,7 +95,7 @@ PMD es una herramienta de análisis de código estático que detecta malas prác
 
 ### Resultado: 2186 violaciones en 33 archivos · 8 rule sets
 
-![Informe PMD](images/pmd_report.png)
+![Informe PMD](pmd_report.png)
 
 | Categoría | Violaciones | Detalle |
 |-----------|-------------|---------|
@@ -124,7 +124,7 @@ Las pruebas unitarias fueron ejecutadas con JaCoCo desde IntelliJ IDEA sobre el 
 
 ### Resumen general
 
-![Reporte de Cobertura](images/coverage_summary.png)
+![Reporte de Cobertura](coverage_summary.png)
 
 | Métrica | Resultado |
 |---------|-----------|
