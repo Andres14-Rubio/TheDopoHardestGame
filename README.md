@@ -10,7 +10,7 @@
 
 ## 📋 Descripción del Proyecto
 
-The DOPO Hardest Game es una versión mejorada del clásico *The World's Hardest Game*. El jugador controla un cuadrado rojo que debe recolectar todas las monedas del nivel y llegar a la zona verde final, mientras esquiva enemigos en constante movimiento. El proyecto fue desarrollado como entrega final del curso de Programación Orientada por Objetos, aplicando todos los conceptos vistos durante el semestre.
+The DOPO Hardest Game es una versión mejorada del clásico *The World's Hardest Game*. El jugador controla un cuadrado rojo que debe recolectar todas las monedas del nivel y llegar a la zona verde final, mientras esquiva enemigos en constante movimiento. El proyecto aplica todos los conceptos de Programación Orientada por Objetos vistos durante el semestre.
 
 ---
 
@@ -29,20 +29,39 @@ The DOPO Hardest Game es una versión mejorada del clásico *The World's Hardest
 
 ---
 
-## 🧠 Temas de POO implementados
+## 🚀 Guía para ejecutar el juego
 
-| Tema | Implementación |
-|------|----------------|
-| **Herencia** | `Enemigo` → `EnemigoBasico`, `EnemigoRapido`, `EnemigoPatrullero`, `EnemigoPerseguidor`<br>`Entidad` → `Jugador`, `Moneda`, `Zona`, `ElementoEspecial` |
-| **Polimorfismo** | Método `mover()` en cada enemigo, `dibujar()` en elementos especiales |
-| **Encapsulamiento** | Atributos `private` con getters/setters en todas las clases |
-| **Interfaces** | `Movible` (para entidades que se mueven), `PerfilMaquina` (para IAs) |
-| **Clases abstractas** | `Enemigo`, `Entidad`, `ElementoEspecial` |
-| **Singleton** | `ErrorLogger` (única instancia global) |
-| **Manejo de excepciones** | `JuegoException` personalizada |
-| **Colecciones** | `ArrayList<>`, `List<>`, `Iterator` para monedas, enemigos, bombas |
-| **Archivos** | `BufferedReader`, `PrintWriter`, `FileReader` para configuración y guardado |
-| **Patrón BFS** | `MaquinaExperta` usa búsqueda en anchura para encontrar camino óptimo |
+### Requisitos previos
+- Java 11 o superior instalado
+- IntelliJ IDEA (recomendado)
+
+### Pasos para ejecutar
+
+**1. Clonar el repositorio:**
+```bash
+git clone https://github.com/Andres14-Rubio/TheDopoHardestGame.git
+```
+
+**2. Abrir en IntelliJ IDEA:**
+- Abrir IntelliJ → `File` → `Open` → seleccionar la carpeta del proyecto
+
+**3. Agregar librerías:**
+- Clic derecho en el proyecto → `Open Module Settings`
+- En `Libraries` → `+` → agregar todos los `.jar` de la carpeta `lib/`
+
+**4. Ejecutar el juego:**
+- Abrir el archivo `src/presentacion/VentanaPrincipal.java`
+- Clic derecho → `Run 'VentanaPrincipal.main()'`
+- O presionar `Shift + F10`
+
+### Controles
+
+| Acción | Jugador 1 | Jugador 2 (PvP) |
+|--------|-----------|-----------------|
+| Mover arriba | `W` | `↑` |
+| Mover abajo | `S` | `↓` |
+| Mover izquierda | `A` | `←` |
+| Mover derecha | `D` | `→` |
 
 ---
 
@@ -75,7 +94,7 @@ src/
 │   ├── MaquinaAleatoria.java
 │   └── MaquinaExperta.java     
 ├── presentacion/
-│   ├── VentanaPrincipal.java
+│   ├── VentanaPrincipal.java   # Clase principal - punto de entrada
 │   ├── PanelJuego.java
 │   ├── PanelInformacion.java
 │   ├── PanelBotones.java
@@ -90,73 +109,180 @@ src/
 
 ---
 
+## 🗺️ Diagrama de Clases
+
+```
+                    ┌─────────────┐
+                    │   Entidad   │  (abstracta)
+                    │─────────────│
+                    │ x, y, ancho │
+                    │ alto, color │
+                    └──────┬──────┘
+                           │ hereda
+         ┌─────────────────┼──────────────────┐
+         │                 │                  │
+    ┌────┴────┐      ┌──────┴──────┐    ┌─────┴──────────┐
+    │Jugador  │      │   Moneda    │    │ElementoEspecial│ (abstracta)
+    └─────────┘      │─────────────│    └────────┬───────┘
+                     │ MonedaSkin  │             │
+                     └─────────────┘     ┌───────┴───────┐
+                                         │               │
+                                      ┌──┴──┐       ┌────┴──────┐
+                                      │Bomba│       │FuenteVida │
+                                      └─────┘       └───────────┘
+
+                    ┌─────────────┐
+                    │   Enemigo   │  (abstracta)
+                    │─────────────│
+                    │ velocidad   │
+                    │ mover()     │
+                    └──────┬──────┘
+                           │ hereda
+    ┌──────────────┬────────┴──────────┬─────────────────┐
+    │              │                   │                  │
+┌───┴──────┐ ┌─────┴──────┐ ┌──────────┴───┐ ┌───────────┴────┐
+│Enemigo   │ │Enemigo     │ │Enemigo       │ │Enemigo         │
+│Basico    │ │Rapido      │ │Patrullero    │ │Perseguidor     │
+└──────────┘ └────────────┘ └──────────────┘ └────────────────┘
+
+    ┌──────────────┐         ┌─────────────────┐
+    │  «interface» │         │   «interface»   │
+    │   Movible    │         │  PerfilMaquina  │
+    │──────────────│         │─────────────────│
+    │  mover()     │         │  decidirMov()   │
+    └──────┬───────┘         └────────┬────────┘
+           │ implementa               │ implementa
+      (Enemigos)            ┌─────────┴──────────┐
+                            │                    │
+                   ┌────────┴──────┐    ┌─────────┴──────┐
+                   │MaquinaAleat.. │    │MaquinaExperta  │
+                   │               │    │ (BFS)          │
+                   └───────────────┘    └────────────────┘
+
+    ┌─────────────┐     ┌──────────────┐     ┌───────────────┐
+    │    Juego    │────▶│    Nivel     │────▶│Configuracion  │
+    └─────────────┘     └──────────────┘     └───────────────┘
+           │
+    ┌──────┴──────┐
+    │ErrorLogger  │  (Singleton)
+    └─────────────┘
+```
+
+---
+
+## 🧠 Temas de POO implementados
+
+| Tema | Implementación |
+|------|----------------|
+| **Herencia** | `Enemigo` → `EnemigoBasico`, `EnemigoRapido`, `EnemigoPatrullero`, `EnemigoPerseguidor`<br>`Entidad` → `Jugador`, `Moneda`, `Zona`, `ElementoEspecial` |
+| **Polimorfismo** | Método `mover()` en cada enemigo, `dibujar()` en elementos especiales |
+| **Encapsulamiento** | Atributos `private` con getters/setters en todas las clases |
+| **Interfaces** | `Movible` (para entidades que se mueven), `PerfilMaquina` (para IAs) |
+| **Clases abstractas** | `Enemigo`, `Entidad`, `ElementoEspecial` |
+| **Singleton** | `ErrorLogger` (única instancia global) |
+| **Manejo de excepciones** | `JuegoException` personalizada |
+| **Colecciones** | `ArrayList<>`, `List<>`, `Iterator` para monedas, enemigos, bombas |
+| **Archivos** | `BufferedReader`, `PrintWriter`, `FileReader` para configuración y guardado |
+| **Patrón BFS** | `MaquinaExperta` usa búsqueda en anchura para encontrar camino óptimo |
+
+---
+
+## 🎨 Patrones de Diseño
+
+### 1. Singleton — `ErrorLogger`
+El `ErrorLogger` garantiza que exista una única instancia del sistema de logging en toda la aplicación. Esto evita que múltiples instancias escriban simultáneamente en el archivo de log, previniendo corrupción de datos.
+
+```java
+// Una sola instancia global
+ErrorLogger logger = ErrorLogger.getInstance();
+logger.log("Evento del juego");
+```
+
+### 2. Strategy — `PerfilMaquina`
+La interfaz `PerfilMaquina` permite intercambiar el comportamiento de la IA en tiempo de ejecución sin modificar el código del jugador máquina. `MaquinaAleatoria` y `MaquinaExperta` son dos estrategias diferentes que implementan la misma interfaz.
+
+```java
+PerfilMaquina ia = new MaquinaExperta();  // o new MaquinaAleatoria()
+ia.decidirMovimiento(estadoActual);
+```
+
+### 3. Template Method — `Enemigo` (abstracta)
+La clase abstracta `Enemigo` define el esqueleto del comportamiento de todos los enemigos. Cada subclase (`EnemigoBasico`, `EnemigoRapido`, `EnemigoPatrullero`, `EnemigoPerseguidor`) implementa su propio método `mover()`, personalizando el comportamiento sin cambiar la estructura general.
+
+---
+
+## 📚 Temas y Lecciones Aprendidas
+
+### Lo que aprendimos aplicando POO en un proyecto real
+
+**Herencia y jerarquías de clases:** Diseñar la jerarquía `Entidad → Enemigo → EnemigoBasico` nos enseñó que una buena jerarquía de clases reduce drásticamente la duplicación de código. Al principio teníamos lógica repetida en cada tipo de enemigo; al abstraerla en `Enemigo`, el código se volvió mucho más mantenible.
+
+**Interfaces vs clases abstractas:** Aprendimos en la práctica cuándo usar una interfaz (`Movible`, `PerfilMaquina`) y cuándo una clase abstracta (`Enemigo`, `Entidad`). Las interfaces definen contratos de comportamiento; las clases abstractas comparten implementación común.
+
+**El patrón Singleton:** Implementar `ErrorLogger` como Singleton nos mostró los beneficios de controlar el número de instancias de una clase, especialmente cuando hay recursos compartidos como archivos de log.
+
+**Manejo de archivos y persistencia:** Implementar el sistema de guardado/carga de partidas con `BufferedReader` y `PrintWriter` fue uno de los retos más interesantes. Aprendimos a serializar el estado complejo de un juego en un formato de texto legible.
+
+**Algoritmos en POO — BFS:** Integrar el algoritmo de búsqueda en anchura dentro de `MaquinaExperta` nos mostró cómo los algoritmos clásicos se integran naturalmente en el diseño orientado por objetos.
+
+**Pruebas unitarias:** Escribir 80 métodos de prueba para `dominioTest.java` nos enseñó que testear es tan importante como programar. Encontramos varios bugs durante las pruebas que no habíamos detectado manualmente.
+
+---
+
+## 🔄 Retrospectiva del Proyecto
+
+### ¿Qué salió bien?
+- La jerarquía de clases quedó limpia y extensible; agregar un nuevo tipo de enemigo requiere solo crear una nueva subclase.
+- El sistema de configuración desde archivos `.txt` hace el juego muy flexible sin recompilar.
+- La cobertura de pruebas del 89% en líneas demuestra un esfuerzo real de verificación.
+- El algoritmo BFS en `MaquinaExperta` funciona correctamente y hace la IA desafiante.
+
+### ¿Qué mejoraríamos con más tiempo?
+- **Javadocs completos:** Documentar todos los métodos públicos con el formato estándar para reducir las 309 violaciones de PMD en documentación.
+- **Refactorizar `codestyle`:** Aplicar el formateador automático de IntelliJ para eliminar las 1182 violaciones de estilo de una sola vez.
+- **Thread-safe Singleton:** Hacer `ErrorLogger` thread-safe con `synchronized` para mayor robustez.
+- **Object pooling:** Evitar crear objetos dentro de los bucles del motor para mejorar el rendimiento (`AvoidInstantiatingObjectsInLoops`).
+- **Más niveles:** El sistema de carga desde `.txt` facilita agregar niveles nuevos sin tocar el código.
+
+### Distribución del trabajo
+- **Diego Alejandro Mesa:** Lógica de dominio, algoritmos de movimiento, sistema de niveles, BFS.
+- **Andrés Felipe Rubio:** Interfaz gráfica (Swing), sistema de persistencia, pruebas unitarias, configuración.
+
+---
+
 ## 🔍 Informe PMD
 
 ### ¿Qué es PMD?
+PMD es una herramienta de análisis de código estático para Java que examina el código fuente sin ejecutarlo, detectando problemas potenciales antes de que ocurran en producción.
 
-PMD es una herramienta de análisis de código estático para Java que examina el código fuente sin ejecutarlo. Su objetivo es detectar problemas potenciales antes de que se conviertan en errores en producción. PMD analiza el código usando conjuntos de reglas (*rule sets*) agrupadas por categorías, cada una enfocada en un aspecto diferente de la calidad del software.
-
-En este proyecto se ejecutó PMD sobre los 33 archivos fuente usando 8 rule sets, obteniendo el siguiente resultado:
+### Resultado: 2186 violaciones en 33 archivos · 8 rule sets
 
 ![Informe PMD](pmd_report.png)
 
-### Resumen de resultados
-
-| Categoría | Violaciones | Severidad principal |
-|-----------|-------------|---------------------|
+| Categoría | Violaciones | Detalle |
+|-----------|-------------|---------|
 | **bestpractices** | 370 | 6 errores · 354 advertencias · 10 info |
 | **codestyle** | 1182 | 1170 errores · 12 advertencias |
 | **design** | 184 | 1 error · 183 advertencias |
 | **documentation** | 309 | 309 advertencias |
 | **errorprone** | 105 | 49 errores · 56 advertencias |
-| **multithreading** | 1 | 1 advertencia |
-| **performance** | 35 | 6 errores · 29 advertencias |
+| **multithreading** | 1 | `NonThreadSafeSingleton` |
+| **performance** | 35 | `AvoidFileStream`(6), `AppendCharacterWithChar`(2), `AvoidInstantiatingObjectsInLoops`(26), `InefficientEmptyStringCheck`(1) |
 | **Total** | **2186** | en 33 archivos escaneados |
 
-### Análisis detallado por categoría
+### Análisis por categoría
 
-#### 🔵 codestyle — 1182 violaciones
-Es la categoría con más violaciones y también la de menor impacto funcional. PMD detectó inconsistencias en convenciones de nombres (variables locales, parámetros, constantes), uso de llaves en bloques `if`/`for`/`while`, espaciado y longitud de líneas. Estas violaciones son puramente estéticas y no afectan en absoluto el comportamiento del programa. En un proyecto académico donde la prioridad es la correctitud funcional y la aplicación de patrones de diseño, este tipo de advertencias son esperadas y aceptables. En un entorno profesional se corregirían usando herramientas de formateo automático como Checkstyle o el formateador de IntelliJ.
+- **`codestyle` (1182):** Convenciones de nombres y formato. No afectan la funcionalidad. Corregibles con el formateador automático de IntelliJ.
+- **`documentation` (309):** Faltan Javadocs formales. Las clases tienen comentarios internos pero no en formato `/** */`.
+- **`AvoidInstantiatingObjectsInLoops` (26):** Objetos creados en el bucle del motor de juego. Inherente a la arquitectura de un juego en tiempo real.
+- **`AvoidFileStream` (6):** Uso de `FileInputStream`; mejorable con Java NIO en versiones futuras.
+- **`NonThreadSafeSingleton` (1):** `ErrorLogger` no es thread-safe; aceptable en un juego de un solo hilo.
 
-#### 🟡 bestpractices — 370 violaciones
-Esta categoría agrupa recomendaciones de buenas prácticas generales de Java. La mayoría de las 354 advertencias corresponden a usos como acceder a campos o métodos estáticos a través de instancias en lugar del nombre de la clase, o no usar el tipo de interfaz al declarar colecciones (`ArrayList` en vez de `List`). Los 6 errores detectados son casos donde se podría mejorar el uso de la API de Java, pero ninguno representa un bug real en el proyecto.
-
-#### 🟡 documentation — 309 violaciones
-PMD detectó que la mayoría de los métodos públicos y clases no tienen documentación Javadoc formal. Todas las clases tienen comentarios internos explicando su funcionamiento, pero PMD exige el formato estándar `/** ... */`. Esta es una limitación de tiempo durante el desarrollo del proyecto; la lógica del código está clara y comentada internamente.
-
-#### 🟠 design — 184 violaciones
-PMD identificó 183 advertencias relacionadas con complejidad ciclomática alta, principalmente en métodos como `verificarColisiones()`, `mover()` en los enemigos patrulleros y `cargarNivel()`. Esta complejidad es **inherente a la naturaleza del juego**: un motor de juego necesita evaluar múltiples condiciones simultáneas (colisiones, estados, posiciones) en cada ciclo. Refactorizar estos métodos artificialmente para reducir la complejidad haría el código menos legible sin ningún beneficio real. El 1 error de diseño corresponde a una clase que podría haberse simplificado pero que fue mantenida para mayor claridad pedagógica.
-
-#### 🔴 errorprone — 105 violaciones
-Los 49 errores de esta categoría corresponden principalmente a comparaciones con `null` que podrían lanzar `NullPointerException` en casos extremos, y a algunas variables que PMD considera que podrían ser `final`. Los 56 advertencias son casos donde el código funciona correctamente pero PMD sugiere patrones alternativos más defensivos. Ninguno de estos errores se manifestó durante las pruebas del juego.
-
-#### 🟠 performance — 35 violaciones
-- **`AvoidInstantiatingObjectsInLoops` (26):** El motor de juego crea objetos dentro de los bucles principales de renderizado y detección de colisiones. Esto es una consecuencia directa de la arquitectura de un juego en tiempo real; cada frame necesita calcular nuevas posiciones y estados. Optimizar esto requeriría implementar un *object pool*, lo cual está fuera del alcance del curso.
-- **`AvoidFileStream` (6):** Se usaron `FileInputStream` y `FileOutputStream` para la persistencia de partidas. PMD recomienda `Files.newBufferedReader()` de Java NIO, que es más eficiente. Esta mejora queda como trabajo futuro.
-- **`AppendCharacterWithChar` (2):** PMD detectó concatenaciones de un solo carácter con String donde sería más eficiente usar `char`. Impacto mínimo en un juego de esta escala.
-- **`InefficientEmptyStringCheck` (1):** Una comparación con `""` que debería usar `isEmpty()`. Corrección trivial.
-
-#### 🔴 multithreading — 1 violación
-- **`NonThreadSafeSingleton` (1):** El `ErrorLogger` implementa el patrón Singleton sin sincronización de hilos. Dado que el juego corre en un único hilo principal (el Event Dispatch Thread de Swing), esta violación no representa ningún riesgo real de condición de carrera. En una aplicación multi-hilo real se implementaría con `synchronized` o con el patrón *initialization-on-demand holder*.
-
-### Conclusión PMD
-
-El número total de violaciones (2186) puede parecer alto a primera vista, pero es importante contextualizarlo: **el 54% (1182) son puramente de estilo**, **el 14% (309) son de documentación formal**, y el resto corresponde a decisiones de diseño justificadas por la naturaleza de un motor de juego en tiempo real. No se detectó ningún bug crítico ni vulnerabilidad de seguridad. El código es funcional, correcto y cumple todos los requisitos del proyecto.
+**Conclusión:** El 54% de violaciones son de estilo puro, el 14% de documentación formal. No se detectó ningún bug crítico ni vulnerabilidad.
 
 ---
 
 ## 📊 Informe de Cobertura de Pruebas
-
-### ¿Qué es la cobertura de pruebas?
-
-La cobertura de pruebas (*code coverage*) es una métrica que indica qué porcentaje del código fuente fue ejecutado durante las pruebas unitarias. Se mide en cuatro niveles:
-
-- **Cobertura de clases:** ¿Cuántas clases fueron instanciadas al menos una vez?
-- **Cobertura de métodos:** ¿Cuántos métodos fueron llamados al menos una vez?
-- **Cobertura de ramas:** ¿Cuántos caminos posibles de las estructuras `if`/`switch`/`while` fueron recorridos?
-- **Cobertura de líneas:** ¿Cuántas líneas de código fueron ejecutadas al menos una vez?
-
-Las pruebas fueron ejecutadas con **JaCoCo** integrado en IntelliJ IDEA sobre el archivo `dominioTest.java`, que contiene 80 métodos de prueba cubriendo todas las clases del paquete `dominio`.
 
 ### Resumen general
 
@@ -169,36 +295,7 @@ Las pruebas fueron ejecutadas con **JaCoCo** integrado en IntelliJ IDEA sobre el
 | **Ramas** | 445 | 695 | **64%** ⚠️ |
 | **Líneas** | 1466 | 1646 | **89,1%** ✅ |
 
-### Análisis detallado por clase
+### ¿Por qué el 64% en ramas?
+La cobertura de ramas es la más difícil en un motor de juego. El 36% no cubierto corresponde a: lógica de colisiones que depende de posiciones exactas en pantalla, estados del algoritmo BFS que requieren configuraciones específicas de nivel, y bloques `catch` de errores de I/O difíciles de forzar en pruebas normales.
 
-| Clase | Métodos | Ramas | Líneas | Observación |
-|-------|---------|-------|--------|-------------|
-| `Configuracion` | 100% | 80,6% | 93,6% | Bien cubierta; ramas restantes son casos de error de archivo |
-| `DominioTest` | 100% | 46,9% | 100% | Clase de pruebas; ramas propias de asserts internos |
-| `EnemigoBasico` | 88,9% | 80% | 95,8% | Un método de movimiento especial no fue ejercido |
-| `EnemigoPatrullero` | 88,9% | 84,6% | 97,8% | Muy bien cubierto; falta un patrón de patrulla |
-| `EnemigoPerseguidor` | 50% | 75% | 78,6% | Métodos de IA avanzada difíciles de simular en test |
-| `Entidad` | 100% | 100% | 100% | ✅ Cobertura perfecta |
-| `ErrorLogger` | 100% | 62,5% | 94,6% | Ramas de manejo de errores de escritura en disco |
-| `Bomba` | 100% | 50% | 33,3% | Lógica de explosión con estados difíciles de simular |
-| `EstadoPartida` | — | — | — | Clase de datos; cobertura implícita |
-| `Juego` | — | — | — | Motor principal; lógica de UI difícil de testear unitariamente |
-| **Total dominio** | **89,6%** | **64%** | **89,1%** | |
-
-### Análisis de la cobertura de ramas (64%)
-
-La cobertura de ramas es la métrica más difícil de alcanzar en un motor de juego. El 36% de ramas no cubiertas se explica por:
-
-1. **Lógica de colisiones en tiempo real:** Los métodos `verificarColisiones()` y `mover()` contienen decenas de condiciones que dependen de posiciones exactas de objetos en pantalla. Simular todas las combinaciones posibles en pruebas unitarias requeriría crear configuraciones de nivel muy específicas para cada caso.
-
-2. **Estados de la IA (`EnemigoPerseguidor`):** El algoritmo BFS de `MaquinaExperta` toma decisiones dinámicas basadas en el mapa actual. Cubrir todas sus ramas requeriría simular múltiples configuraciones de nivel completas.
-
-3. **Manejo de errores de I/O:** Las ramas de `catch` para errores de lectura/escritura de archivos (partidas guardadas, logs) son muy difíciles de disparar en un entorno de prueba normal sin forzar fallos del sistema de archivos.
-
-4. **Condiciones de fin de juego:** Algunos estados como "jugador eliminado por bomba en modo PvP con escudo activo" requieren una secuencia muy específica de eventos que es costosa de replicar en tests unitarios.
-
-### Conclusión de cobertura
-
-Los resultados son **muy satisfactorios** para un proyecto de esta naturaleza. Alcanzar **100% de cobertura de clases** y **89,1% de líneas** en un motor de juego completo demuestra un esfuerzo real de pruebas. La cobertura de ramas del 64%, aunque inferior, es completamente normal en aplicaciones con lógica de juego en tiempo real. En proyectos profesionales de videojuegos, una cobertura de ramas superior al 60% se considera excelente dado el alto número de estados posibles del sistema.
-
----
+**Conclusión:** 100% de clases cubiertas y 89% de líneas es excelente para un motor de juego. Una cobertura de ramas superior al 60% se considera muy buena en aplicaciones con lógica de juego en tiempo real.
