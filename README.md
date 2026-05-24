@@ -73,7 +73,7 @@ src/
 │   ├── Movible.java            # Interfaz
 │   ├── PerfilMaquina.java      # Interfaz
 │   ├── MaquinaAleatoria.java
-│   └── MaquinaExperta.java     # BFS pathfinding
+│   └── MaquinaExperta.java     
 ├── presentacion/
 │   ├── VentanaPrincipal.java
 │   ├── PanelJuego.java
