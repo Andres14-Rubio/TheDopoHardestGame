@@ -170,7 +170,7 @@ src/
 
 ---
 
-## 🧠 Temas de POO implementados
+## 🧠 Temas de DOPO implementados
 
 | Tema | Implementación |
 |------|----------------|
@@ -213,7 +213,7 @@ La clase abstracta `Enemigo` define el esqueleto del comportamiento de todos los
 
 ## 📚 Temas y Lecciones Aprendidas
 
-### Lo que aprendimos aplicando POO en un proyecto real
+### Lo que aprendimos aplicando DOPO en un proyecto real
 
 **Herencia y jerarquías de clases:** Diseñar la jerarquía `Entidad → Enemigo → EnemigoBasico` nos enseñó que una buena jerarquía de clases reduce drásticamente la duplicación de código. Al principio teníamos lógica repetida en cada tipo de enemigo; al abstraerla en `Enemigo`, el código se volvió mucho más mantenible.
 
