@@ -35,7 +35,7 @@ The DOPO Hardest Game es una versión mejorada del clásico *The World's Hardest
 - Java 11 o superior instalado
 - IntelliJ IDEA (recomendado)
 
-### Pasos para ejecutar
+### Opción 1 — Ejecutar desde IntelliJ IDEA
 
 **1. Clonar el repositorio:**
 ```bash
@@ -53,6 +53,23 @@ git clone https://github.com/Andres14-Rubio/TheDopoHardestGame.git
 - Abrir el archivo `src/presentacion/VentanaPrincipal.java`
 - Clic derecho → `Run 'VentanaPrincipal.main()'`
 - O presionar `Shift + F10`
+
+### Opción 2 — Ejecutar desde consola (sin IntelliJ)
+
+**1. Entrar a la carpeta del proyecto:**
+```bash
+cd "ruta/del/proyecto"
+```
+
+**2. Compilar todo el proyecto:**
+```bash
+javac -cp "lib/*" -d out src/dominio/*.java src/presentacion/*.java
+```
+
+**3. Ejecutar el juego:**
+```bash
+java -cp "out;lib/*" presentacion.VentanaPrincipal
+```
 
 ### Controles
 
@@ -299,3 +316,5 @@ PMD es una herramienta de análisis de código estático para Java que examina e
 La cobertura de ramas es la más difícil en un motor de juego. El 36% no cubierto corresponde a: lógica de colisiones que depende de posiciones exactas en pantalla, estados del algoritmo BFS que requieren configuraciones específicas de nivel, y bloques `catch` de errores de I/O difíciles de forzar en pruebas normales.
 
 **Conclusión:** 100% de clases cubiertas y 89% de líneas es excelente para un motor de juego. Una cobertura de ramas superior al 60% se considera muy buena en aplicaciones con lógica de juego en tiempo real.
+
+---
