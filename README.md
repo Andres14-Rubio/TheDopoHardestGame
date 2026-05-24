@@ -28,7 +28,7 @@ The DOPO Hardest Game es una versión mejorada del clásico *The World's Hardest
 
 ---
 
-## 🧠 Temas de POO implementados
+## 🧠 Temas de DOPO implementados
 
 | Tema | Implementación |
 |------|----------------|
