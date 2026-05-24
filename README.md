@@ -1,4 +1,4 @@
-[README (1).md](https://github.com/user-attachments/files/28195727/README.1.md)
+
 # 🎮 The DOPO Hardest Game
 
 **Universidad Escuela Colombiana de Ingeniería**  
